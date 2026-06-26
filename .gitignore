@@ -1,0 +1,20 @@
+# ⚠️ GCP kimlik anahtarları — ASLA commit edilmez (güvenlik)
+*.json
+service-account*.json
+!**/schema*.json          # (varsa) şema tanım dosyalarına izin ver
+
+# Ortam değişkenleri
+.env
+
+# İndirilen ham veri
+data/
+*.csv
+
+# Python sanal ortam ve cache
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
