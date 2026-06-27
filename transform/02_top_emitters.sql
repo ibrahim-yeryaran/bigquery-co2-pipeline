@@ -1,5 +1,5 @@
--- Her yıl için ülkeleri toplam ve kişi başı emisyona göre sıralar.
--- "Hangi yıl kim en çok kirletti, kişi başı kim önde" sorularını yanıtlar.
+-- Ranks countries by total and per-capita emissions for each year.
+-- Answers "who emitted the most in a given year, and who leads per capita".
 
 CREATE OR REPLACE TABLE `${PROJECT}.${ANALYTICS}.top_emitters`
 CLUSTER BY year

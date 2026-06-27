@@ -1,11 +1,11 @@
 """
 run_transformations.py
 ----------------------
-transform/ klasöründeki .sql dosyalarını ad sırasına göre (01_, 02_, ...)
-BigQuery'de çalıştırır. Her dosyadaki ${PROJECT} / ${RAW} / ${ANALYTICS}
-yer tutucuları .env değerleriyle doldurulur.
+Runs the .sql files in the transform/ folder in name order (01_, 02_, ...)
+against BigQuery. The ${PROJECT} / ${RAW} / ${ANALYTICS} placeholders in each
+file are filled in from .env values.
 
-Çalıştırma:
+Run:
     python transform/run_transformations.py
 """
 
@@ -34,16 +34,16 @@ SQL_DIR = Path(__file__).resolve().parent
 
 
 def ensure_analytics_dataset(client: bigquery.Client) -> None:
-    """Analytics dataset'i yoksa oluşturur (idempotent)."""
+    """Create the analytics dataset if it doesn't exist (idempotent)."""
     dataset = bigquery.Dataset(f"{PROJECT}.{ANALYTICS_DATASET}")
     dataset.location = LOCATION
     client.create_dataset(dataset, exists_ok=True)
-    log.info("Analytics dataset hazır: %s.%s", PROJECT, ANALYTICS_DATASET)
+    log.info("Analytics dataset ready: %s.%s", PROJECT, ANALYTICS_DATASET)
 
 
 def run() -> None:
     if not PROJECT:
-        log.error("GCP_PROJECT_ID tanımlı değil. .env dosyanı doldur (bkz. .env.example).")
+        log.error("GCP_PROJECT_ID is not set. Fill in your .env (see .env.example).")
         sys.exit(1)
 
     client = bigquery.Client(project=PROJECT, location=LOCATION)
@@ -51,7 +51,7 @@ def run() -> None:
 
     sql_files = sorted(SQL_DIR.glob("*.sql"))
     if not sql_files:
-        log.warning("transform/ içinde .sql dosyası yok.")
+        log.warning("No .sql files found in transform/.")
         return
 
     for sql_file in sql_files:
@@ -61,12 +61,12 @@ def run() -> None:
             RAW=RAW_DATASET,
             ANALYTICS=ANALYTICS_DATASET,
         )
-        log.info("Çalıştırılıyor → %s", sql_file.name)
+        log.info("Running → %s", sql_file.name)
         job = client.query(sql)
-        job.result()  # bitmesini bekle
-        log.info("  ✅ %s tamam (%s işlenen byte)", sql_file.name, f"{job.total_bytes_processed or 0:,}")
+        job.result()  # wait for completion
+        log.info("  ✅ %s done (%s bytes processed)", sql_file.name, f"{job.total_bytes_processed or 0:,}")
 
-    log.info("Tüm dönüşümler tamamlandı.")
+    log.info("All transformations complete.")
 
 
 if __name__ == "__main__":

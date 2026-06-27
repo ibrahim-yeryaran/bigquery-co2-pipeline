@@ -1,16 +1,16 @@
-# ⚠️ GCP kimlik anahtarları — ASLA commit edilmez (güvenlik)
+# ⚠️ GCP credential keys — NEVER committed (security)
 *.json
 service-account*.json
-!**/schema*.json          # (varsa) şema tanım dosyalarına izin ver
+!**/schema*.json          # allow schema definition files (if any)
 
-# Ortam değişkenleri
+# Environment variables
 .env
 
-# İndirilen ham veri
+# Downloaded raw data
 data/
 *.csv
 
-# Python sanal ortam ve cache
+# Python virtual environment and cache
 .venv/
 venv/
 __pycache__/
