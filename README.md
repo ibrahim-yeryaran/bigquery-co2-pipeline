@@ -1,5 +1,7 @@
 # ☁️ CO₂ Cloud Analytics — BigQuery Pipeline
 
+[![CI](https://github.com/ibrahim-yeryaran/bigquery-co2-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/ibrahim-yeryaran/bigquery-co2-pipeline/actions/workflows/ci.yml)
+
 A **cloud data pipeline** that loads the global CO₂ emissions dataset into
 **Google BigQuery** and transforms it into a partitioned, clustered analytics
 layer with SQL — demonstrating cloud-warehouse engineering on a real, free,
